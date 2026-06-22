@@ -1,3 +1,9 @@
+---
+name: SKILL-swwegd6-campaign
+description: Star Wars D6 Rebellion-era campaign context — Ord Mantell, NPCs, factions, arc, SWAPI integration guide, and sourcebook extension format.
+tags: [star-wars, campaign, weg-d6, rebellion-era, swapi]
+---
+
 # Star Wars D6 — Campaign Context
 *Upload this file to Perplexity Computer alongside SKILL-gm-core.md and SKILL-swwegd6-rules.md.*
 *This file provides the GM with a working Rebellion-era campaign setup and instructions for SWAPI integration and future sourcebooks.*
@@ -135,9 +141,15 @@ The core rulebook is the foundation. Any WEG Star Wars sourcebook can be added a
 
 ### Extension file format
 
-Create a file named `SKILL-swwegd6-[sourcebook-name].md`:
+Create a file named `SKILL-swwegd6-[sourcebook-name].md` with YAML frontmatter:
 
 ```
+---
+name: SKILL-swwegd6-[sourcebook-name]
+description: [Sourcebook Name] extension for WEG Star Wars D6.
+tags: [star-wars, weg-d6, sourcebook]
+---
+
 # [Sourcebook Name] — WEG Star Wars Extension
 *Supplement to SKILL-swwegd6-rules.md and SKILL-swwegd6-campaign.md*
 
@@ -161,13 +173,6 @@ Create a file named `SKILL-swwegd6-[sourcebook-name].md`:
 | Creatures of the Galaxy | Full bestiary with stats |
 | Planets of the Galaxy Vol. 1–3 | Detailed planet entries for all major worlds |
 | Dark Empire Sourcebook | Post-RotJ era, Emperor reborn arc |
-
-### How to add a sourcebook
-
-1. Create `SKILL-swwegd6-[name].md` following the template above
-2. Upload it to Perplexity Computer alongside the core skill files
-3. At session start, tell the GM: *"Use [sourcebook name] extension for this session"*
-4. The GM will reference that file for relevant stats and content
 
 ---
 

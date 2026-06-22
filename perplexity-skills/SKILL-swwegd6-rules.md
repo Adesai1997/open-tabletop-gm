@@ -1,3 +1,9 @@
+---
+name: SKILL-swwegd6-rules
+description: West End Games Star Wars D6 2nd Edition Revised mechanical rules reference. Always load alongside SKILL-gm-core.md.
+tags: [star-wars, rules, weg-d6, mechanics]
+---
+
 # Star Wars D6 Rules Reference
 *West End Games — 2nd Edition Revised (1996)*
 *Upload this file to Perplexity Computer alongside SKILL-gm-core.md.*

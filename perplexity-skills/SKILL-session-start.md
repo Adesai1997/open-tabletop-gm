@@ -1,3 +1,9 @@
+---
+name: SKILL-session-start
+description: Star Wars D6 session start checklist and GM startup sequence. Read at the start of every session.
+tags: [star-wars, session, weg-d6, checklist]
+---
+
 # Star Wars D6 — Session Start Checklist
 *Upload this file to Perplexity Computer alongside the other SKILL files.*
 *Read this file at the start of every session.*
