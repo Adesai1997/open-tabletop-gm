@@ -52,8 +52,24 @@ systems/<your-system>/
 | System | Module | Notes |
 |--------|--------|-------|
 | D&D 5e | `systems/dnd5e/` | Full support — scripts, SRD dataset, character tools |
+| Star Wars D6 (WEG 2e Revised) | `systems/swwegd6/` | Full support — character scripts, wound tracking, Force mechanics, SWAPI integration, Rebellion-era sample campaign |
 
 **Adding your own:** Copy `systems/TEMPLATE.md` to `systems/<your-system>/system.md` and fill it in. See [SYSTEM-PORTING.md](SYSTEM-PORTING.md) for a compatibility breakdown of popular systems (Pathfinder 2e, Vampire: The Masquerade, Cyberpunk RED, Warhammer 40k).
+
+---
+
+## Perplexity Computer
+
+If you're running sessions via **Perplexity Computer** (AI with file upload) rather than OpenCode, use the skill files in [`perplexity-skills/`](perplexity-skills/):
+
+| File | Purpose |
+|---|---|
+| `SKILL-gm-core.md` | GM persona, craft principles, session structure |
+| `SKILL-swwegd6-rules.md` | Complete WEG D6 mechanics — dice, wounds, Force, combat, advancement |
+| `SKILL-swwegd6-campaign.md` | Rebellion-era sample campaign, NPCs, SWAPI integration guide, sourcebook extension format |
+| `SKILL-session-start.md` | Session start checklist, copy-paste prompt, between-session tracking |
+
+**Upload all four files** to Perplexity Computer at the start of each session. Use the copy-paste session start prompt in `SKILL-session-start.md` to give the GM your current character state. Add optional sourcebook extension files (`SKILL-swwegd6-[name].md`) to bring in Galaxy Guides, Heroes & Rogues, or any other WEG supplement.
 
 ---
 
@@ -124,6 +140,14 @@ For a local model via LM Studio, add your provider config:
 ```
 
 The skill walks you through world creation, tone selection, and character setup. Everything is saved to plain Markdown files you can read and edit directly.
+
+For Star Wars D6 specifically:
+
+```
+/gm new my-rebellion-campaign swwegd6
+```
+
+Or open a Perplexity Computer session, upload the four files from `perplexity-skills/`, and use the session start prompt.
 
 ---
 
@@ -262,123 +286,6 @@ Runs entirely independently of the LLM. If the display isn't running, all script
 |---|---|
 | ![Stat sidebar](docs/screenshots/sidebar-card.png) | ![Character sheet modal](docs/screenshots/character-sheet-modal.png) |
 
-### Features at a glance
-
-- <img src="docs/icons/scroll.png" height="18"> Typewriter narration with animated scene-reactive backgrounds
-- <img src="docs/icons/crystal_ball.png" height="18"> Live party stat sidebar — HP bars, spell slots, conditions, turn order
-- <img src="docs/icons/spellbook.png" height="18"> Clickable character sheet modal — attacks, features, inventory
-- <img src="docs/icons/attack.png" height="18"> Inline dice math with auto-detected roll types and visual icons
-- <img src="docs/icons/shield.png" height="18"> LAN party support — every device in the room sees the same display; TLS optional
-- <img src="docs/icons/dragon.png" height="18"> Dynamic sky canvas — live sun arc, moon, stars, and weather-reactive clouds
-
-### Viewing options
-
-| Option | How |
-|--------|-----|
-| **TV — Cast tab** | Chrome → three-dot menu → Cast → Cast tab; select your Chromecast or smart TV |
-| **TV — Screen mirror** | macOS: Control Centre → Screen Mirroring → Apple TV / AirPlay receiver |
-| **iPad / tablet** | Start with `--lan`, open `http://<your-ip>:5001` in Safari or Chrome; works in landscape |
-| **Second monitor** | Open `http://localhost:5001` in a browser window and drag it to the second display |
-
-### TLS / HTTPS (optional)
-
-HTTP is the default. Use `--tls` only on public or untrusted networks. When passed:
-- A self-signed cert is auto-generated if `cert.pem` is not present
-- A plain HTTP server starts on `:8080` to serve `cert.pem` for download
-- Per-platform install instructions are printed to the terminal (iOS, Android, Mac)
-
-For iOS: open `http://<your-ip>:8080/cert.pem` in Safari → tap Allow → Settings → General → VPN & Device Management → install profile → Certificate Trust Settings → enable full trust.
-
-### Player input from the companion UI
-
-Players open the companion on their phone browser. The **Party Input** panel lets each player:
-
-1. **Stage** an action — type it and hit Stage. It appears in the panel visible to everyone.
-2. **Mark Ready** — confirms the action is final.
-3. **Skip** — passes the turn without typing.
-
-When a submission is picked up, three pulsing dots confirm the GM received it. If the player's device has not been seen before, the GM's screen shows a one-time approval card — approved devices are remembered across restarts.
-
-Staged input text is cached in the browser — if the page reloads before the GM picks it up, the text is restored automatically.
-
-### Scene detection
-
-The server scans narration text for keywords and crossfades the background gradient to match the current environment. Scenes change automatically as the story moves.
-
-| Scene | Trigger keywords | Particles |
-|-------|-----------------|-----------|
-| Tavern | inn, hearth, ale, tallow, barkeep | embers |
-| Dungeon | corridor, torch, portcullis, dank | dust |
-| Ocean / Docks | dock, harbour, wave, tide, ship | ripples |
-| Forest | tree, canopy, moss, thicket, grove | leaves |
-| Crypt | tomb, undead, skeleton, burial | smoke |
-| Arcane | ritual, rune, sigil, incantation | sparks |
-| Mountain | glacier, frost, blizzard, ridge | snow |
-| Cave | stalactite, grotto, echo, drip | mist |
-| Night | midnight, moon, constellation | stars |
-| City / Town | market, cobble, district, crowd | rain |
-| + 7 more | mine, castle, ruins, desert, fire, temple, swamp | — |
-
-Scene transitions crossfade over ~2.5 seconds. The server maintains a 20-chunk rolling window so scenes don't flicker on single matches.
-
-### Dynamic sky canvas
-
-A canvas layer above the scene background renders a live sky driven by `world_time` data:
-
-- **Time of day** — sun arcs from dawn through midday to dusk; crescent moon and stars at night; orange horizon at twilight
-- **Weather** — calm: light clouds; overcast: heavy dark clouds; rainy: dense cover, muted palette; stormy: near-black sky
-- **Clouds** — five objects each built from overlapping circles; drift slowly and wrap
-
-Push world time after session load and after any rest or time advance:
-
-```bash
-python3 display/push_stats.py --world-time \
-  '{"date":"Day 7","day_name":"Starday","time":"morning","season":"Winter","weather":"overcast"}'
-```
-
-Valid `time` values: `dawn`, `morning`, `midday`, `afternoon`, `evening`, `dusk`, `night`  
-Valid `weather` values: `calm`, `clear`, `overcast`, `rainy`, `stormy`
-
-### Sound effects
-
-Narration text is scanned server-side for 11 SFX categories. Matches trigger a synthesized WAV played via Web Audio API on any device with the tab open — no server audio output.
-
-```
-impact · sword · arrow · shout · thud · magic · coins · door · low_hum · fire · breath
-```
-
-SFX synthesis requires numpy. If numpy is not installed the feature degrades silently. Toggle via the **Sound Effects** switch in the top-right of the display.
-
-### Character sheet modal
-
-Click or tap any character card in the sidebar to open a full character sheet — attacks, features, and inventory. Works on desktop and on phones/tablets connected via LAN.
-
-Include a `sheet` field when pushing stats to populate the modal:
-
-```bash
-python3 display/push_stats.py --replace-players --json '{
-  "players": [{
-    "name": "Aldric",
-    "hp": {"current": 14, "max": 18},
-    "sheet": {
-      "attacks": [{"name": "Longsword", "bonus": "+5", "damage": "1d8+3", "type": "Slashing"}],
-      "features": [{"name": "Second Wind", "text": "Bonus action: regain HP. Short rest recharge."}],
-      "inventory": ["Longsword", "Chain Mail", "Shield", "15 gp"]
-    }
-  }]
-}'
-```
-
-Close with **Esc**, clicking outside the panel, or the ✕ button.
-
-### Session replay buffer
-
-The server buffers the last 60 narration chunks to disk (`text_log.json`). Reconnecting browsers — Chromecast drops, tab refreshes — replay the full session history automatically. No narration is lost on reconnect.
-
-### GM Help button
-
-A **◈ GM Help** button sits in the bottom-right corner of the display. Click it and within a few seconds a contextual hint is generated from the current scene state and pushed to the display — no CLI command needed. Hint blocks are collapsed by default; click to expand. Warnings use an amber border to flag irreversible choices.
-
 See [display/README.md](display/README.md) for full documentation.
 
 ---
@@ -393,24 +300,30 @@ open-tabletop-gm/
   no_think.md           ← suppresses chain-of-thought preamble on local models
   paths.md              ← absolute path constants for this installation
   SYSTEM-PORTING.md     ← guide for adding new game systems
+  perplexity-skills/    ← uploadable skill files for Perplexity Computer sessions
+    SKILL-gm-core.md
+    SKILL-swwegd6-rules.md
+    SKILL-swwegd6-campaign.md
+    SKILL-session-start.md
   systems/
     dnd5e/              ← D&D 5e reference implementation
-      system.md         ← D&D 5e rules context
+      system.md
       ability-scores.py
       character.py
       lookup.py
       data/             ← bundled SRD dataset
+    swwegd6/            ← WEG Star Wars D6 (2e Revised)
+      system.md         ← rules context loaded at session start
+      character.py      ← character creation, sheet, CP/FP/DSP tracking
+      swapi_lookup.py   ← canonical film data via SWAPI
+      README.md
     TEMPLATE.md         ← scaffold for building a new system module
   scripts/              ← universal scripts (dice, combat, tracker, calendar, search)
-    startup.md          ← display push syntax (loaded only when display is ON at session start)
-    combat.md           ← combat script syntax (loaded only at /gm combat start)
-    general.md          ← dice, calendar, search syntax (loaded on demand)
-    character.md        ← character creation script syntax (loaded on demand)
   display/              ← cinematic display companion (Flask)
   templates/            ← blank campaign file templates
-  probe/                ← model probe tool for testing instruction-following
-    probe.py            ← runs 5 test cases against any OpenAI-compatible endpoint
-    run-openrouter.sh   ← sequential runner for OpenRouter free/paid models
+  data/campaigns/       ← sample campaign data
+    rebellion-era-sample/
+      state.md / world.md / npcs.md
 ```
 
 Campaign data lives outside the repo:
@@ -425,22 +338,12 @@ Campaign data lives outside the repo:
 
 The Python toolchain offloads everything mechanical — dice, HP math, initiative, timed effects, conditions — so the LLM only handles narration and judgment calls. This means smaller models remain functional even when creative output is limited.
 
-The main constraint for local models is **agentic tool-call depth**. open-tabletop-gm is not a chatbot — it executes sequences of tool calls (bash, file reads) before responding. Models below ~70B parameters degrade after 4–5 sequential tool calls, drifting from their instructions toward the most recently read content. The routing architecture in SKILL-branches.md reduces the standing system prompt to ~2,300 tokens (down from ~18,000) to mitigate this, but it does not eliminate it at 24B and below.
-
 **Practical hardware guidance:**
-- **MacBook Air / 24GB unified memory:** Local inference below 70B is unreliable for session load. Use OpenRouter instead — 10 models tested, all scored cleanly, cost is ~$0.01–0.05/session on paid endpoints.
-- **64GB+ machine (M3 Max, M4 Max, or equivalent):** Local inference becomes viable at 70B. Qwen3-70B is the recommended starting point.
+- **MacBook Air / 24GB unified memory:** Local inference below 70B is unreliable for session load. Use OpenRouter instead — ~$0.01–0.05/session on paid endpoints.
+- **64GB+ machine (M3 Max, M4 Max, or equivalent):** Local inference viable at 70B. Qwen3-70B recommended.
 - **Multi-GPU workstation:** All local models viable.
 
 See [docs/LLM-GUIDE.md](docs/LLM-GUIDE.md) for full probe results, token usage data, and hardware recommendations.
-
-See [SYSTEM-PORTING.md — What to expect from smaller/local models](SYSTEM-PORTING.md#what-to-expect-from-smallerlocal-models) for details.
-
----
-
-## Looking for the Claude-optimised version?
-
-If you're running Claude Code, [`claude-dnd-skill`](https://github.com/Bobby-Gray/claude-dnd-skill) is the dedicated version with model routing, deeper tool integration, and features built specifically for Claude's capabilities.
 
 ---
 
