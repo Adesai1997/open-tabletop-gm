@@ -1,0 +1,12 @@
+{
+  "name": "eberron-dm",
+  "version": "1.0.0",
+  "description": "Eberron-default Dungeon Master assistant for running persistent D&D 5e campaigns entirely on the local filesystem. Campaign creation/loading, character management, combat tracking, NPC generation, dice rolling, XP/encounter budgeting, a deterministic campaign graph, and full session state persisted across sessions under ~/eberron-dnd. Ships a bundled canonical Eberron lorebook (distilled references + full-text corpus) searchable offline via lore_search.py, plus the 5e SRD (2014) for instant rules/monster/spell lookup. No display companion, no network, no external services. Provides the `dnd` skill; invoke as /dm:dnd, or just describe what you want once a campaign is loaded.",
+  "author": {
+    "name": "Alan Desai",
+    "url": "https://github.com/"
+  },
+  "homepage": "https://github.com/neuralinitiative/claude-dnd-skill",
+  "license": "AGPL-3.0-or-later",
+  "keywords": ["dnd", "dungeons-and-dragons", "ttrpg", "5e", "dungeon-master", "eberron", "game", "offline", "filesystem"]
+}
