@@ -282,7 +282,7 @@ python3 ${CLAUDE_SKILL_DIR}/scripts/campaign_graph.py extract --campaign $CAMP -
 
 ## SRD Data — `scripts/lookup.py` (+ `build_srd.py`)
 The 5e SRD dataset is **bundled** at `${CLAUDE_SKILL_DIR}/data/dnd5e_srd.json` (plus
-`data/srd-2014/*.json`). No runtime download. Use `lookup.py` **first** for any monster,
+`data/srd-2014-complete.json (all 25 SRD resources merged in one file, keyed by resource name)`). No runtime download. Use `lookup.py` **first** for any monster,
 spell, item, condition, or feature — before improvising from memory.
 
 ```bash

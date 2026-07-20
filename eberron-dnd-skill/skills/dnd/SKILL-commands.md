@@ -237,7 +237,7 @@ anything (canon precedence — see `lore/INDEX.md`).
 - `status` → `python3 ${CLAUDE_SKILL_DIR}/scripts/build_srd.py --status` — show bundled
   dataset metadata.
 The 5e SRD dataset is **bundled** at `${CLAUDE_SKILL_DIR}/data/dnd5e_srd.json` (plus
-`data/srd-2014/*.json`). No download is required at runtime; this offline build does not sync
+`data/srd-2014-complete.json (all 25 SRD resources merged in one file, keyed by resource name)`). No download is required at runtime; this offline build does not sync
 from the network.
 
 ---

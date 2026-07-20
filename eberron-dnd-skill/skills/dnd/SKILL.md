@@ -129,12 +129,15 @@ session. Full protocol: `references/filesystem-persistence.md § 8`.
   the full sheet); refresh it at every `/dm save` and `/dm end`.
 - **NEVER lose a PC:** any HP change, level-up, item gain/loss, or bond change updates the
   **sheet AND the card in the same turn.**
-- **Mode B — host memory (optional adapter, no hard dependency):** if the host agent
+- **Mode B — host memory (REQUIRED whenever the host provides it):** if the host agent
   provides persistent memory (e.g. Perplexity Computer's **Brain** via
   `memory_update`/`memory_search`, Claude memory, or equivalent), **mirror each PC's card
   there** — one entry per PC (`eberron:<campaign>:pc:<name>`), **updated not duplicated** —
-  writing at `/dm end` and querying at session start. **The filesystem card always wins on
-  conflict.** This build ships no such tools; if none is available, skip Mode B silently.
+  writing at every `/dm save` and `/dm end` and querying at every session start **before**
+  reading files (fastest recall of who the PC is). **The filesystem card always wins on
+  conflict.** Detect availability once per session: if a memory facility exists, using it
+  for each PC is mandatory, not optional; only when the host truly has none may Mode B be
+  skipped, silently. This build ships no such tools of its own.
 
 ---
 
@@ -218,7 +221,7 @@ ${CLAUDE_SKILL_DIR}/
   scripts/              ← dice, combat, character, tracker, calendar, xp, lookup,
                           lore_search, oracle, graph/, paths, autosave (no display/network)
   data/                 ← bundled 5e SRD (dnd5e_srd.json, dnd5e_supplemental.json,
-                          srd-2014/*.json) + graph/verb_table_seed.yaml
+                          srd-2014-complete.json) + graph/verb_table_seed.yaml
   templates/            ← state.md, world.md, npcs.md, session-log.md, character-sheet.md,
                           arc.md, pc-memory-card.md
 ```
